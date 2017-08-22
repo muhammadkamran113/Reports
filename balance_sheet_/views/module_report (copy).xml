@@ -238,12 +238,33 @@
                                                     <span t-esc="data.description.name"></span>
 
                                                 </td>
+                                                <t t-set="header" t-value="data.description.name"/>
 
-                                                <t t-foreach="o.division" t-as="part">
-                                                    <td><span t-esc="head_total_(data.id,part.name)"></span></td>
-                                                </t>
+                                                <td>
+                                                    <span t-esc="head_total_(header,'darkhi')"></span>
+                                                    <t t-set="col_total" t-value="col_total + head_total_(header,'darkhi')" />
+                                                </td>
 
-                                                <td><span t-esc="data.amount"></span></td>
+                                                <td>
+                                                    <span t-esc="head_total_(header,'port')"></span>
+                                                    <t t-set="col_total" t-value="col_total + head_total_(header,'port')" />
+                                                </td>
+
+                                                <td>
+                                                    <span t-esc="head_total_(header,'goth')"></span>
+                                                    <t t-set="col_total" t-value="col_total + head_total_(header,'goth')" />
+                                                </td>
+
+                                                <td>
+                                                    <span t-esc="head_total_(header,'mathelo')"></span>
+                                                    <t t-set="col_total" t-value="col_total + head_total_(header,'mathelo')" />
+                                                </td>
+
+                                                <td>
+                                                    <span t-esc="head_total_(header,'electronics')"></span>
+                                                    <t t-set="col_total" t-value="col_total + head_total_(header,'electronics')" />
+                                                </td>
+                                                <td><span t-esc="col_total"></span></td>
                                                 <td class="last_child"></td>
                                             </tr>
 
@@ -278,12 +299,34 @@
                                                     <b><span t-esc="data.description.name"></span></b>
 
                                                 </td>
+                                                <t t-set="header" t-value="data.description.name"/>
+                                                <t t-set="col_total" t-value="0" />
 
-                                                <t t-foreach="o.division" t-as="part">
-                                                    <td><span t-esc="head_total_(data.id,part.name)"></span></td>
-                                                </t>
+                                                <td>
+                                                    <b><span t-esc="full_total(header,'darkhi')"></span></b>
+                                                    <t t-set="col_total" t-value="col_total + full_total(header,'darkhi')" />
+                                                </td>
 
-                                                <td><b><span t-esc="data.amount"></span></b></td>
+                                                <td>
+                                                    <b><span t-esc="full_total(header,'port')"></span></b>
+                                                    <t t-set="col_total" t-value="col_total + full_total(header,'port')" />
+                                                </td>
+
+                                                <td>
+                                                    <b><span t-esc="full_total(header,'goth')"></span></b>
+                                                    <t t-set="col_total" t-value="col_total + full_total(header,'goth')" />
+                                                </td>
+
+                                                <td>
+                                                    <b><span t-esc="full_total(header,'mathelo')"></span></b>
+                                                    <t t-set="col_total" t-value="col_total + full_total(header,'mathelo')" />
+                                                </td>
+
+                                                <td>
+                                                    <b><span t-esc="full_total(header,'electronics')"></span></b>
+                                                    <t t-set="col_total" t-value="col_total + full_total(header,'electronics')" />
+                                                </td>
+                                                <td><b><span t-esc="col_total"></span></b></td>
                                                 <td class="last_child"></td>
                                             </tr>
 
@@ -311,12 +354,57 @@
                                                     </t>
                                                     <b><span t-esc="data.description.name"></span></b>
                                                 </td>
+                                                <t t-set="header" t-value="data.description.name"/>
+                                                <t t-set="col_total" t-value="0" />
 
-                                                <t t-foreach="o.division" t-as="part">
-                                                    <td><span t-esc="head_total_(data.id,part.name)"></span></td>
-                                                </t>
+                                                <td>
 
-                                                <td><span t-esc="data.amount"></span></td>
+                                                    <t t-set="darkhi_total" t-value="grand_total(header,'darkhi')" />
+
+                                                    <t t-set="col_total" t-value="col_total + darkhi_total" />
+
+                                                    <b><span t-esc="darkhi_total"></span></b>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <t t-set="port_total" t-value="grand_total(header,'port')" />
+
+                                                    <t t-set="col_total" t-value="col_total + port_total" />
+
+                                                    <b><span t-esc="port_total"></span></b>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <t t-set="goth_total" t-value="grand_total(header,'goth')" />
+
+                                                    <t t-set="col_total" t-value="col_total + goth_total" />
+
+                                                    <b><span t-esc="goth_total"></span></b>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <t t-set="mathelo_total" t-value="grand_total(header,'mathelo')" />
+                                                    
+                                                    <t t-set="col_total" t-value="col_total + mathelo_total" />
+
+                                                    <b><span t-esc="mathelo_total"></span></b>
+                                                </td>
+
+                                                <td>
+
+                                                    <t t-set="mathelo_total" t-value="grand_total(header,'electronics')" />
+                                                    
+                                                    <t t-set="col_total" t-value="col_total + mathelo_total" />
+
+                                                    <b><span t-esc="mathelo_total"></span></b>
+                                                </td>
+                                                <td><span t-esc="col_total"></span></td>
                                                 <td class="last_child"></td>
                                             </tr>
 

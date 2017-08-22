@@ -51,9 +51,160 @@ class SampleDevelopmentReport(models.AbstractModel):
 
         records = self.env['ecube.report.structure'].search([('description','=',state)])
 
+        def head_total_(attr,partner):
+            current_account = attr
+            firm_partner = ' '
+            credit = 0
+            debit = 0
+            total = 0
+            nature = ' '
+            for x in records.report_link:
+                if x.description.name == current_account:
+                    for y in x.account_head:
+                        if partner == 'darkhi':
+                            firm_partner = 'Engro Fertilizer Dharki'
+                        if partner == 'port':
+                            firm_partner = 'Engro Port Karachi'
+                        if partner == 'goth':
+                            firm_partner = 'FFC Goth Machi'
+                        if partner == 'mathelo':
+                            firm_partner = 'FFC Mir Pur Mathelo'
+                        if partner == 'electronics':
+                            firm_partner = 'Orient Electronics'
+                        partnerd = self.env['account.move'].search([('branch', '=', firm_partner)])
+                        account = []
+                        for a in partnerd:
+                            for b in a.line_ids:
+                                if b.account_id.id == y.id:
+                                    account.append(b)
+
+                        for z in account:
+                            credit = credit + z.credit
+                            debit = debit + z.debit
+
+                    nature = x.nature
+            if nature == 'debit':
+                total = debit - credit
+            
+            if nature == 'credit':
+                total = credit - debit
+
+            return total
+
+        def full_total(attr,partner):
+            current_account = attr
+            firm_partner = ' '
+            credit = 0
+            debit = 0
+            total = 0
+            for x in records.report_link:
+                if x.description.name == current_account:
+                    for y in x.summary:
+                        for a in records.report_link:
+                            if a.description.name == y.name:
+                                for b in a.account_head:
+                                    if partner == 'darkhi':
+                                        firm_partner = 'Engro Fertilizer Dharki'
+                                    if partner == 'port':
+                                        firm_partner = 'Engro Port Karachi'
+                                    if partner == 'goth':
+                                        firm_partner = 'FFC Goth Machi'
+                                    if partner == 'mathelo':
+                                        firm_partner = 'FFC Mir Pur Mathelo'
+                                    if partner == 'electronics':
+                                        firm_partner = 'Orient Electronics'
+                                    partnerd = self.env['account.move'].search([('branch', '=', firm_partner)])
+                                    account = []
+                                    for c in partnerd:
+                                        for d in c.line_ids:
+                                            if d.account_id.id == b.id:
+                                                account.append(d)
+
+                                    for z in account:
+                                        credit = credit + z.credit
+                                        debit = debit + z.debit
+
+                    nature = x.nature
+
+            if nature == 'debit':
+                total = debit - credit
+            
+            if nature == 'credit':
+                total = credit - debit
+            return total
+
+        def grand_total(attr,partner):
+            current_account = attr
+            credit = 0
+            debit = 0
+            total = 0
+            firm_partner = ' '
+            nature = ' '
+
+            if partner == 'darkhi':
+                firm_partner = 'Engro Fertilizer Dharki'
+            if partner == 'port':
+                firm_partner = 'Engro Port Karachi'
+            if partner == 'goth':
+                firm_partner = 'FFC Goth Machi'
+            if partner == 'mathelo':
+                firm_partner = 'FFC Mir Pur Mathelo'
+            if partner == 'electronics':
+                firm_partner = 'Orient Electronics'
+
+            partnerd = self.env['account.move'].search([('branch', '=', firm_partner)])
+
+            for a in records.report_link:
+
+                if a.description.name == current_account:
+
+                    for b in a.summary:
+
+                        for c in records.report_link:
+
+                            if c.description.name == b.name:
+
+                                for d in c.summary:
+
+                                    for e in records.report_link:
+
+                                        if e.description.name == d.name:
+
+                                            for f in e.account_head:
+
+                                                account = []
+                                                
+                                                for g in partnerd:
+
+                                                    for h in g.line_ids:
+                                                    
+                                                        if h.account_id.id == f.id:
+                                                            account.append(h)
+
+                                                for i in account:
+                                                    credit = credit + i.credit
+                                                    debit = debit + i.debit
+
+                    nature = a.nature
+            if nature == 'debit':
+                total = debit - credit
+            
+            if nature == 'credit':
+                total = credit - debit
+            return total
+
+        def call_heading():
+            if state == 'balance_sheet':
+                return "Balance Sheet"
+                
+            if state == 'profit_loss':
+                return "Profit and Loss"
+                
+            if state == 'cash':
+                return "Cash Flow"
+
         report_heads = []
         divisions = []
-        print "something"
         def genrate_values():
 
             current_records_del = self.env['ecube.report.structure.divisions'].search([])
@@ -180,87 +331,13 @@ class SampleDevelopmentReport(models.AbstractModel):
                                 # print divisioned.partner
                                 # print total_of_partner
                                 # print "-----------------------------------------"
-        
-        def head_total_(attr,partner):
-            divisioned = self.env['ecube.report.structure.divisions'].search([('report_id','=',attr),('partner','=',partner)])
-
-            return divisioned.amount
-
-        def grand_total(attr,partner):
-            current_account = attr
-            credit = 0
-            debit = 0
-            total = 0
-            firm_partner = ' '
-            nature = ' '
-
-            if partner == 'darkhi':
-                firm_partner = 'Engro Fertilizer Dharki'
-            if partner == 'port':
-                firm_partner = 'Engro Port Karachi'
-            if partner == 'goth':
-                firm_partner = 'FFC Goth Machi'
-            if partner == 'mathelo':
-                firm_partner = 'FFC Mir Pur Mathelo'
-            if partner == 'electronics':
-                firm_partner = 'Orient Electronics'
-
-            partnerd = self.env['account.move'].search([('branch', '=', firm_partner)])
-
-            for a in records.report_link:
-
-                if a.description.name == current_account:
-
-                    for b in a.summary:
-
-                        for c in records.report_link:
-
-                            if c.description.name == b.name:
-
-                                for d in c.summary:
-
-                                    for e in records.report_link:
-
-                                        if e.description.name == d.name:
-
-                                            for f in e.account_head:
-
-                                                account = []
-                                                
-                                                for g in partnerd:
-
-                                                    for h in g.line_ids:
-                                                    
-                                                        if h.account_id.id == f.id:
-                                                            account.append(h)
-
-                                                for i in account:
-                                                    credit = credit + i.credit
-                                                    debit = debit + i.debit
-
-                    nature = a.nature
-            if nature == 'debit':
-                total = debit - credit
-            
-            if nature == 'credit':
-                total = credit - debit
-            return total
-
-        def call_heading():
-            if state == 'balance_sheet':
-                return "Balance Sheet"
-                
-            if state == 'profit_loss':
-                return "Profit and Loss"
-                
-            if state == 'cash':
-                return "Cash Flow"
             
         docargs = {
             'doc_ids': docids,
             'doc_model': 'ecube.report.structure',
             'docs': records,
             'data': data,
+            'full_total': full_total,
             'grand_total': grand_total,
             'head_total_': head_total_,
             'form': form,

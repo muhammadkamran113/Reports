@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': "Balance Sheet Terkina",
+    'name': "Balance Sheet UFC",
 
-    'summary': "Balance Sheet Terkina",
+    'summary': "Balance Sheet UFC",
 
-    'description': "Balance Sheet Terkina",
+    'description': "Balance Sheet UFC",
 
     'author': "Muhammmad Kamran",
     'website': "http://www.bcube.com",
