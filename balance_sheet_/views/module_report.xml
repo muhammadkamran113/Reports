@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>   
+
+        <template id="module_report">
+
+            <t t-call="report.html_container">
+
+                <t t-call="report.external_layout">
+
+                    <t t-foreach="docs" t-as="o">
+                
+                        <div class="page">
+
+                            <style>
+                                .header,
+                                .footer {
+                                    display: none;
+                                }
+                                .report-container {
+                                    width: 700px;
+                                    margin: 0px auto;
+                                }
+                                .left {
+                                    width: 32%;
+                                    font-weight: bold;
+                                }
+
+                                table {
+                                    margin: 10px 0px 0px;
+                                    width: 100%;
+                                    float: left;
+                                    border-spacing: 0px;
+                                }
+                                table tr td {
+                                    padding: 5px 0px;
+                                }
+                                table tr th {
+                                    border-bottom: 2px solid #595959;
+                                }
+                                table tr th:first-child,
+                                table tr td:first-child {
+                                    text-align: left;
+                                    padding-left: 10px;
+                                }
+                                table tr th:last-child,
+                                table tr td:last-child {
+                                    text-align: right;
+                                    padding-right: 10px;
+                                }
+                                .grand {
+                                    background: #595959;
+                                    color: #fff;
+                                }
+                                .totaler {
+                                    border-top: 1px solid #595959;
+                                    border-bottom: 1px solid #595959;
+                                }
+                                .report-header {
+                                    width: 100%;
+                                    float: left;
+                                    margin: 0px 0px 30px;
+                                }
+                                .logo,
+                                .dated {
+                                    width: 50%;
+                                    float: left;
+                                }
+                                .dated p {
+                                    text-align: right;
+                                }
+                                .dated {
+                                    padding: 75px 0px 0px;
+                                }
+                                .heading h2 {
+                                    text-align: center;
+                                    text-decoration: underline;
+                                }
+                            </style>
+                            
+                            <div class="report-container">
+
+                                <div class="report-header">
+                                    
+                                    <div class="logo">
+                                        <img src="/balance_sheet_/static/src/img/logo.png" alt="" />
+                                    </div>
+                                    
+                                    <div class="dated">
+                                        <p><span><b>From: </b></span> <span t-esc="form"></span></p>
+                                        <p><span><b>To: </b></span> <span t-esc="to"></span></p>
+                                    </div>
+
+                                </div>
+                                <div class="heading">
+                                    <h2><span t-esc="call_heading()"></span></h2>
+                                </div>
+
+                                <table>
+
+                                    <tr>
+
+                                        <th>Name</th>
+                                        <th>Balance</th>
+                                    </tr>
+
+                                    <t t-foreach="o.report_link" t-as="data">
+
+                                        <t t-if="data.entry_type == 'heading'">
+
+                                            <tr class="noBorder">
+                                                <td>
+                                                    <t t-if="data.level == 2">
+                                                        <span style="width: 10px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 3">
+                                                        <span style="width: 20px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 4">
+                                                        <span style="width: 30px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 5">
+                                                        <span style="width: 40px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level >= 6">
+                                                        <span style="width: 50px; display: inline-block"></span>
+                                                    </t>
+                                                    <b>
+                                                        <span t-esc="data.description.name"></span>
+                                                    </b>
+                                                </td>
+
+                                                <td></td>
+                                            </tr>
+
+                                        </t>
+
+                                        <t t-if="data.entry_type == 'account'">
+
+                                            <tr class="noBorder">
+
+                                                <t t-set="col_total" t-value="0" />
+
+                                                <td>
+
+                                                    <t t-if="data.level == 2">
+                                                        <span style="width: 10px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <t t-if="data.level == 3">
+                                                        <span style="width: 20px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <t t-if="data.level == 4">
+                                                        <span style="width: 30px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <t t-if="data.level == 5">
+                                                        <span style="width: 40px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <t t-if="data.level >= 6">
+                                                        <span style="width: 50px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <span t-esc="data.description.name"></span>
+
+                                                </td>
+                                                
+                                                <t t-set="header" t-value="data.description.name" />
+
+                                                <td><span t-esc="'{:0,}'.format(int(float(head_total_(header))))"></span></td>
+
+                                            </tr>
+
+                                        </t>
+
+                                        <t t-if="data.entry_type == 'total'">
+
+                                            <tr class="noBorder totaler">
+                                                <td>
+
+                                                    <t t-if="data.level == 2">
+                                                        <span style="width: 10px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <t t-if="data.level == 3">
+                                                        <span style="width: 20px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <t t-if="data.level == 4">
+                                                        <span style="width: 30px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <t t-if="data.level == 5">
+                                                        <span style="width: 40px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <t t-if="data.level >= 6">
+                                                        <span style="width: 50px; display: inline-block"></span>
+                                                    </t>
+
+                                                    <b><span t-esc="data.description.name"></span></b>
+
+                                                </td>
+                                                
+                                                <t t-set="header" t-value="data.description.name" />
+
+                                                <td><b><span t-esc="'{:0,}'.format(int(float(full_total(header))))"></span></b></td>
+
+                                            </tr>
+
+                                        </t>
+
+                                        <t t-if="data.entry_type == 'grand_total'">
+
+                                            <tr class="noBorder grand">
+                                                
+                                                <td>
+                                                    <t t-if="data.level == 2">
+                                                        <span style="width: 10px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 3">
+                                                        <span style="width: 20px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 4">
+                                                        <span style="width: 30px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 5">
+                                                        <span style="width: 40px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level >= 6">
+                                                        <span style="width: 50px; display: inline-block"></span>
+                                                    </t>
+                                                    <b><span t-esc="data.description.name"></span></b>
+                                                </td>
+                                                
+                                                <t t-set="header" t-value="data.description.name" />
+
+                                                <td><b><span t-esc="'{:0,}'.format(int(float(grand_total(header))))"></span></b></td>
+                                            </tr>
+
+                                        </t>
+
+                                        <t t-if="data.entry_type == 'net_profit'">
+
+                                            <tr class="noBorder grand">
+                                                
+                                                <td>
+                                                    <t t-if="data.level == 2">
+                                                        <span style="width: 10px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 3">
+                                                        <span style="width: 20px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 4">
+                                                        <span style="width: 30px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level == 5">
+                                                        <span style="width: 40px; display: inline-block"></span>
+                                                    </t>
+                                                    <t t-if="data.level >= 6">
+                                                        <span style="width: 50px; display: inline-block"></span>
+                                                    </t>
+                                                    <b><span t-esc="data.description.name"></span></b>
+                                                </td>
+                                                
+                                                <t t-set="header" t-value="data.description.name" />
+
+                                                <td><b><span t-esc="'{:0,}'.format(int(float(grand_total(header))))"></span></b></td>
+                                            </tr>
+
+                                        </t>
+
+                                    </t>                                    
+                
+                                </table>
+
+                            </div>
+
+                        </div><!--end of page -->
+
+                    </t>
+
+                </t>
+                
+            </t>
+
+        </template>
+
+    </data>
+
+</openerp>
